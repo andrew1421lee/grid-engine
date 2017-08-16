@@ -63,13 +63,5 @@ class snake:
         body.head = coor
         body.append(head)
 
-class coordinate
-    x = None
-    y = None
-    
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
 if __name__ == "__main__":
     main()

@@ -1,5 +1,15 @@
 import pygame
 
+class coordinate:
+    x = None
+    y = None
+    
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+class grid:
+
 class engine:
     WIDTH = 400 # window width
     HEIGHT = 400 # window height
@@ -29,25 +39,27 @@ class engine:
         pygame.display.flip()
         self.clock.tick(self.FPS)
 
-    def draw_rect(self, color, x, y):
-        if x >= self.MAX_X or y >= self.MAX_Y or y < 0 or x < 0: # not allowed to go out of bounds
+    def draw_rect(self, color, coord):
+        if not check_bounds(coord):
             return False
-        elif self.GRIDMATRIX[y][x] == 0:
-            pygame.draw.rect(self.screen, color, pygame.Rect(x * self.GRIDSIZE, y * self.GRIDSIZE, self.GRIDSIZE, self.GRIDSIZE)) # draw the square
-            self.GRIDMATRIX[y][x] = 1 # record its location
+        elif self.GRIDMATRIX[coord.y][coord.x] == 0:
+            pygame.draw.rect(self.screen, color, pygame.Rect(coord.x * self.GRIDSIZE, coord.y * self.GRIDSIZE, self.GRIDSIZE, self.GRIDSIZE)) # draw the square
+            self.GRIDMATRIX[coord.y][coord.x] = 1 # record its location
             return True
+
+    def draw_rects(self, )
 
     def draw_text(self, color, size, text):
         font = pygame.font.SysFont("monospace", size)
         label = font.render(text, 1, color)
         self.screen.blit(label, (100, 100))
 
-    def del_rect(self, x, y):
-        if x >= self.MAX_X or y >= self.MAX_Y or y < 0 or x < 0:
+    def del_rect(self, coord):
+        if not check_bounds(coord):
             return False
-        if not self.GRIDMATRIX[y][x] == 0:
-            pygame.draw.rect(self.screen, self.BG_COLOR, pygame.Rect(x * self.GRIDSIZE, y * self.GRIDSIZE, self.GRIDSIZE, self.GRIDSIZE)) # draw a black square over the square
-            self.GRIDMATRIX[y][x] = 0 # record deletion
+        if not self.GRIDMATRIX[coord.y][coord.x] == 0:
+            pygame.draw.rect(self.screen, self.BG_COLOR, pygame.Rect(coord.x * self.GRIDSIZE, coord.y * self.GRIDSIZE, self.GRIDSIZE, self.GRIDSIZE)) # draw a black square over the square
+            self.GRIDMATRIX[coord.y][coord.x] = 0 # record deletion
             return True
         else:
             return False 
@@ -55,6 +67,12 @@ class engine:
     #def draw_mul_rects(self, rects)
 
     #def del_mul_rects(self, rects)
+
+    def check_bounds(self, coord):
+        if coord.x >= self.MAX_X or coord.y >= self.MAX_Y or coord.y < 0 or coord.x < 0:
+            return False
+        elif: return True
+
 
     def print_matrix(self): # print out all contents of matrix (debug purpose)
         for xarrays in self.GRIDMATRIX:
