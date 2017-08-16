@@ -23,18 +23,33 @@ class engine:
     def start(self): # start the game engine
         self.screen = pygame.display.set_mode((self.HEIGHT, self.WIDTH)) # show the screen
         self.clock = pygame.time.Clock() # set the clock
-        i = 0
-        done = False 
-        while not done: # loop until exit
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    done = True
-            self.draw_rect(self.WHITE, i, i)
-            if i % 2 == 0:
-                self.del_rect(i - 2, i -2)
-            i = i + 1
-            pygame.display.flip() # update the screen
-            self.clock.tick(self.FPS) # wait for fps clock
+#        i = 0
+#        done = False 
+#        while not done: # loop until exit
+#            for event in pygame.event.get():
+#                if event.type == pygame.QUIT:
+#                    done = True
+#            self.draw_rect(self.WHITE, i, i)
+#            if i % 2 == 0:
+#                self.del_rect(i - 2, i -2)
+#            i = i + 1
+#            pygame.display.flip() # update the screen
+#            self.clock.tick(self.FPS) # wait for fps clock
+
+    def get_key_press(self): # returns a key press event
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                return event.key
+
+    def check_for_exit(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return True
+        return False
+
+    def refresh_screen(self):
+        pygame.display.flip()
+        self.clock.tick(self.FPS)
 
     def draw_rect(self, color, x, y):
         if x >= self.MAX_X or y >= self.MAX_Y: # not allowed to go out of bounds
