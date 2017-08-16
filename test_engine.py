@@ -1,7 +1,7 @@
 from grid import *
 
 def main():
-    global instance 
+    global instance, gameover, done 
     instance = engine()
     instance.start()
 
@@ -9,6 +9,7 @@ def main():
     gameover = False
     clock = 0
     slowdown = 4
+    snek = snake(point(0, 0))
     while not done:
         key_press = None
         for events in pygame.event.get():
@@ -18,31 +19,34 @@ def main():
                 key_press = events.key
     
         if clock % slowdown == 0:
-            instance.del_rect(lastx, lasty)
-            if x < 0 or y < 0 or x >= instance.MAX_X or y >= instance.MAX_Y:
+            instance.del_rect(snek.tail)
+            if snek.head.x < 0 or snek.head.y < 0 or snek.head.x >= instance.MAX_X or snek.head.y >= instance.MAX_Y:
                 game_over()
-            instance.draw_rect(instance.WHITE, x, y)
+                gameover = True
+                instance.refresh_screen()
+            else: instance.draw_rect(instance.WHITE, snek.head)
 
-        if key_press == pygame.K_UP: facing = 0
-        elif key_press == pygame.K_DOWN: facing = 2
-        elif key_press == pygame.K_LEFT: facing = 3
-        elif key_press == pygame.K_RIGHT: facing = 1
+        if key_press == pygame.K_UP: snek.facing = 0
+        elif key_press == pygame.K_DOWN: snek.facing = 2
+        elif key_press == pygame.K_LEFT: snek.facing = 3
+        elif key_press == pygame.K_RIGHT: snek.facing = 1
     
         if clock % slowdown == 0 and not gameover:
-            lastx = x
-            lasty = y
-            if facing == 0: y = y - 1 # north
-            elif facing == 1: x = x + 1 # east
-            elif facing == 2: y = y + 1 # south
-            elif facing == 3: x = x - 1 # west
+            if snek.facing == 0: snek.add_segment(point(snek.head.x, snek.head.y - 1))# north
+            elif snek.facing == 1: snek.add_segment(point(snek.head.x + 1, snek.head.y)) # east
+            elif snek.facing == 2: snek.add_segment(point(snek.head.x, snek.head.y + 1)) # south
+            elif snek.facing == 3: snek.add_segment(point(snek.head.x - 1, snek.head.y))
     
-        instance.refresh_screen()
-
+        #print(str(snek.tail.x) + ", " + str(snek.tail.y))
+        if not gameover:
+            instance.refresh_screen()
 
         clock = clock + 1
     
         if clock > 10000000:
             clock = 0
+
+    instance.print_matrix()
 
 def game_over():
     instance.draw_text(instance.WHITE, 30, "GAME OVER MAN")
@@ -53,15 +57,20 @@ class snake:
     body = []
     tail = None
     facing = 2 # 0 = north, 1 = east, 2 = south, 3 = west
+    size = 10;
 
-    def __init__(self, coor):
-        head = coor
-        tail = head
-        body.append(head)
+    def __init__(self, pnt):
+        self.head = pnt
+        self.tail = self.head
+        self.body.append(self.head)
 
-    def add_segment(self, coor):
-        body.head = coor
-        body.append(head)
+    def add_segment(self, pnt):
+        self.head = pnt
+        self.body.insert(0, self.head)
+        try:
+            self.tail = self.body.pop(self.size)
+        except (IndexError):
+            pass
 
 if __name__ == "__main__":
     main()
