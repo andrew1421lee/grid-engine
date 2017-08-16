@@ -24,7 +24,7 @@ class pix:
             return self.value == other.value
         return False
     
-    def __ne__(self, other);
+    def __ne__(self, other):
         return not self.__eq__(other)
 
 class grid:

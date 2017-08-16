@@ -29,11 +29,11 @@ def main():
                 game_over()
             else: instance.draw_rect(instance.WHITE, snek.head)
 
-        if key_press == pygame.K_UP: snek.facing = 0
-        elif key_press == pygame.K_DOWN: snek.facing = 2
-        elif key_press == pygame.K_LEFT: snek.facing = 3
-        elif key_press == pygame.K_RIGHT: snek.facing = 1
-    
+        if key_press == pygame.K_UP and not snek.facing == 2: snek.facing = 0
+        elif key_press == pygame.K_DOWN and not snek.facing == 0: snek.facing = 2
+        elif key_press == pygame.K_LEFT and not snek.facing == 1: snek.facing = 3
+        elif key_press == pygame.K_RIGHT and not snek.facing == 3: snek.facing = 1
+ 
         if clock % slowdown == 0 and not gameover:
             if snek.facing == 0: snek.add_segment(point(snek.head.x, snek.head.y - 1))# north
             elif snek.facing == 1: snek.add_segment(point(snek.head.x + 1, snek.head.y)) # east
