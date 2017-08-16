@@ -1,12 +1,17 @@
 from grid import *
 
+def game_over():
+    global instance, gameover
+    instance.draw_text(instance.WHITE, 30, "GAME OVER MAN")
+    gameover = True
+    instance.refresh_screen()
+
 def main():
-    global instance, gameover, done 
+    global instance, gameover
     instance = engine()
     instance.start()
-
-    done = False
     gameover = False
+    done = False
     clock = 0
     slowdown = 4
     snek = snake(point(0, 0))
@@ -22,8 +27,6 @@ def main():
             instance.del_rect(snek.tail)
             if snek.head.x < 0 or snek.head.y < 0 or snek.head.x >= instance.MAX_X or snek.head.y >= instance.MAX_Y:
                 game_over()
-                gameover = True
-                instance.refresh_screen()
             else: instance.draw_rect(instance.WHITE, snek.head)
 
         if key_press == pygame.K_UP: snek.facing = 0
@@ -38,6 +41,7 @@ def main():
             elif snek.facing == 3: snek.add_segment(point(snek.head.x - 1, snek.head.y))
     
         #print(str(snek.tail.x) + ", " + str(snek.tail.y))
+        print(gameover)
         if not gameover:
             instance.refresh_screen()
 
@@ -47,10 +51,6 @@ def main():
             clock = 0
 
     instance.print_matrix()
-
-def game_over():
-    instance.draw_text(instance.WHITE, 30, "GAME OVER MAN")
-    gameover = True
 
 class snake:
     head = None
@@ -65,12 +65,20 @@ class snake:
         self.body.append(self.head)
 
     def add_segment(self, pnt):
+        if self.check_self(pnt):
+            game_over()
         self.head = pnt
         self.body.insert(0, self.head)
         try:
             self.tail = self.body.pop(self.size)
         except (IndexError):
             pass
+
+    def check_self(self, pnt):
+        for seg in self.body:
+            if seg == pnt:
+                return True
+        return False
 
 if __name__ == "__main__":
     main()
