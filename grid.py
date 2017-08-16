@@ -37,6 +37,11 @@ class engine:
             self.GRIDMATRIX[y][x] = 1 # record its location
             return True
 
+    def draw_text(self, color, size, text):
+        font = pygame.font.SysFont("monospace", size)
+        label = font.render(text, 1, color)
+        self.screen.blit(label, (100, 100))
+
     def del_rect(self, x, y):
         if x >= self.MAX_X or y >= self.MAX_Y or y < 0 or x < 0:
             return False
