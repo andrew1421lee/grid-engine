@@ -97,10 +97,10 @@ class engine:
             return True
         else: return False
 
-    def draw_text(self, color, size, text):
+    def draw_text(self, color, size, loc, text):
         font = pygame.font.SysFont("monospace", size)
         label = font.render(text, 1, color)
-        self.screen.blit(label, (100, 100))
+        self.screen.blit(label, loc)
 
     def del_rect(self, pnt):
         if self.GRID.reset_pix_at(pnt):
