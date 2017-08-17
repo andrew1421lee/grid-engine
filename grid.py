@@ -108,6 +108,10 @@ class engine:
             return True
         else: return False 
 
+    def clear_screen(self):
+        grid.__init__(grid, self.WIDTH, self.HEIGHT, self.GRIDSIZE)
+        self.screen.fill((0, 0, 0))
+        self.refresh_screen()
     #def draw_mul_rects(self, rects)
 
     #def del_mul_rects(self, rects)

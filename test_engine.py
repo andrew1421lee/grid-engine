@@ -37,6 +37,10 @@ def main():
         for events in pygame.event.get():
             if events.type == pygame.QUIT:
                 done = True
+            if gameover and events.type == pygame.KEYDOWN:
+                gameover = False
+                snek = snake(point(0, 0))
+                instance.clear_screen()
             elif events.type == pygame.KEYDOWN:
                 key_press = events.key
     
@@ -72,6 +76,7 @@ def main():
     #instance.print_matrix()
 
 class snake:
+    default_size = 3
     head = None
     body = []
     tail = None
